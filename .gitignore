@@ -1,2 +1,4 @@
 savedx-chrome-extension.pem
 node_modules/
+.ds_store
+backend/downloads
