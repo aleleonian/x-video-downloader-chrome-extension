@@ -9,9 +9,9 @@ function addDownloadButton() {
         const tweetUrl = article.closest('a')?.href || window.location.href;
         const btn = document.createElement('button');
         
-        btn.innerText = "⬇️ Download Video";
+        btn.innerText = "⬇️";
         btn.className = "download-video-btn";
-        btn.style.cssText = "position:absolute; bottom:10px; right:10px; background:#1DA1F2; color:#fff; border:none; padding:5px 10px; cursor:pointer; font-size:12px; border-radius:5px;";
+        btn.style.cssText = "bottom:10px; right:10px; background:#1DA1F2; color:#fff; border:none; padding:5px 10px; cursor:pointer; font-size:12px; border-radius:5px;";
         
         btn.addEventListener('click', () => {
             chrome.runtime.sendMessage({ action: "download_video", url: tweetUrl });
