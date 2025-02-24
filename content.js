@@ -1,4 +1,34 @@
+// 1️⃣ Inject the CSS animation into the page
+const style = document.createElement("style");
+style.innerHTML = `
+    @keyframes spin {
+        from { transform: rotate(0deg); }
+        to { transform: rotate(360deg); }
+    }
+`;
+document.head.appendChild(style);
+
+// 2️⃣ Function to create the spinner
+function createSpinner() {
+  const spinner = document.createElement("div");
+  spinner.className = "spinner";
+  spinner.style.cssText = `
+        width: 16px;
+        height: 16px;
+        border: 2px solid #fff;
+        border-top: 2px solid transparent;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+        display: inline-block;
+        margin-left: 5px;
+    `;
+  return spinner;
+}
+
+// 3️⃣ Function to add the download button to tweets
 function addDownloadButton() {
+  const buttonInnerText = "⬇️";
+
   document.querySelectorAll("article").forEach((article) => {
     if (article.querySelector(".download-video-btn")) return; // Avoid duplicates
 
@@ -8,16 +38,15 @@ function addDownloadButton() {
     const tweetUrl = window.location.href;
     const btn = document.createElement("button");
 
-    btn.innerText = "⬇️";
+    btn.innerText = buttonInnerText;
     btn.className = "download-video-btn";
     btn.style.cssText =
       "background:#1DA1F2; color:#fff; border:none; padding:5px 10px; cursor:pointer; font-size:12px; border-radius:5px; margin-left:10px;";
 
     btn.addEventListener("click", () => {
-      // Change to loading state (GIF or spinner)
-      btn.innerHTML = `<img src="${chrome.runtime.getURL(
-        "assets/spinner.gif"
-      )}" style="width:20px; height:20px;">`;
+      btn.innerText = "";
+      const spinner = createSpinner();
+      btn.appendChild(spinner);
       btn.disabled = true;
 
       chrome.runtime.sendMessage(
@@ -25,7 +54,7 @@ function addDownloadButton() {
         (response) => {
           if (chrome.runtime.lastError) {
             console.error("Error sending message:", chrome.runtime.lastError);
-            btn.innerText = "⬇️";
+            btn.innerText = buttonInnerText;
             btn.disabled = false;
             return;
           }
@@ -38,33 +67,23 @@ function addDownloadButton() {
 
           // Revert back to normal after download starts
           setTimeout(() => {
-            btn.innerText = "⬇️";
+            btn.innerText = buttonInnerText;
             btn.disabled = false;
-          }, 3000); // Simulating completion after 3 seconds
+          }, 3000);
         }
       );
     });
 
-    // Find the best place to insert the button
-    const controls = article.querySelector('div[role="group"]'); // Like/Retweet section
-    const videoContainer = video.parentElement; // Video container
-    const tweetBody = article.querySelector('div[data-testid="tweetText"]'); // Tweet text
-
+    // Insert the button into the tweet's action buttons
+    const controls = article.querySelector('div[role="group"]');
     if (controls) {
-      controls.appendChild(btn); // Button next to Like/Retweet
-    } else if (videoContainer) {
-      videoContainer.appendChild(btn); // Button inside video container
-    } else if (tweetBody) {
-      tweetBody.parentElement.appendChild(btn); // Button below tweet text
+      controls.appendChild(btn);
     }
   });
 }
 
-// Run function immediately to add buttons on page load
+// 4️⃣ Run function immediately and observe for new tweets
 addDownloadButton();
 
-// Keep watching for new tweets (since Twitter loads dynamically)
-const observer = new MutationObserver(() => {
-  addDownloadButton();
-});
+const observer = new MutationObserver(addDownloadButton);
 observer.observe(document.body, { childList: true, subtree: true });
