@@ -38,7 +38,7 @@ function addDownloadButton() {
 
           // Revert back to normal after download starts
           setTimeout(() => {
-            btn.innerText = "⬇️ Download Video";
+            btn.innerText = "⬇️";
             btn.disabled = false;
           }, 3000); // Simulating completion after 3 seconds
         }

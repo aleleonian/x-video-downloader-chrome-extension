@@ -5,6 +5,12 @@
     "description": "Adds a download button to Twitter videos",
     "permissions": ["storage", "scripting", "downloads"],
     "host_permissions": ["https://twitter.com/*", "https://x.com/*"],
+    "web_accessible_resources": [
+      {
+        "resources": ["assets/spinner.gif"],
+        "matches": ["<all_urls>"]
+      }
+    ],
     "background": {
       "service_worker": "background.js"
     },
@@ -14,9 +20,6 @@
         "js": ["content.js"],
         "run_at": "document_idle"
       }
-    ],
-    "action": {
-      "default_popup": "popup.html"
-    }
+    ]
   }
   
