@@ -28,7 +28,9 @@ app.post('/download', async (req, res) => {
 
     console.log(`Downloading video from: ${tweetUrl}`);
 
-    const command = `yt-dlp -f bestvideo+bestaudio --merge-output-format mp4 -o "${filePath}" "${tweetUrl}"`;
+    // const command = `yt-dlp -f bestvideo+bestaudio --merge-output-format mp4 -o "${filePath}" "${tweetUrl}"`;
+    const command = `yt-dlp --cookies twitter_cookies.txt -f bestvideo+bestaudio --merge-output-format mp4 -o "${filePath}" "${tweetUrl}"`;
+
     exec(command, (error, stdout, stderr) => {
         if (error) {
             console.error(`yt-dlp error: ${stderr}`);

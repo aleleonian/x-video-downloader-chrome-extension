@@ -35,13 +35,19 @@ function addDownloadButton() {
     const video = article.querySelector("video");
     if (!video) return; // Only add button if video exists
 
-    const tweetUrl = window.location.href;
+    const tweetLink = article.querySelector('a[href*="/status/"]');
+    const tweetUrl = tweetLink ? `https://x.com${tweetLink.getAttribute('href')}` : null;
+
+    if (!tweetUrl) {
+      console.warn("Could not find tweet URL");
+      return;
+    }
     const btn = document.createElement("button");
 
     btn.innerText = buttonInnerText;
     btn.className = "download-video-btn";
     btn.style.cssText =
-      "background:#1DA1F2; color:#fff; border:none; padding:5px 10px; cursor:pointer; font-size:12px; border-radius:5px; margin-left:10px;";
+      "background:#1DA1F2; color:#fff; border:none; padding:5px 10px; cursor:pointer; font-size:12px; border-radius:5px; margin-left:10px; transition: background 0.3s ease, color 0.3s ease;";
 
     btn.addEventListener("click", () => {
       btn.innerText = "";
@@ -52,18 +58,25 @@ function addDownloadButton() {
       chrome.runtime.sendMessage(
         { action: "download_video", url: tweetUrl },
         (response) => {
-          if (chrome.runtime.lastError) {
-            console.error("Error sending message:", chrome.runtime.lastError);
-            btn.innerText = buttonInnerText;
-            btn.disabled = false;
+          if (chrome.runtime.lastError || response?.status !== "success") {
+            console.error("Download failed!");
+
+            // Show error visually
+            btn.innerText = "👎🏻";
+            btn.style.background = "red";
+            btn.style.color = "white";
+
+            // Revert back to normal after 5 seconds
+            setTimeout(() => {
+              btn.innerText = buttonInnerText;
+              btn.style.background = "#1DA1F2";
+              btn.style.color = "#fff";
+              btn.disabled = false;
+            }, 5000);
             return;
           }
 
-          if (response?.status === "success") {
-            console.log("Download started!");
-          } else {
-            console.error("Download failed!");
-          }
+          console.log("Download started!");
 
           // Revert back to normal after download starts
           setTimeout(() => {
