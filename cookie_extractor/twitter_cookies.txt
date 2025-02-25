@@ -1,0 +1,12 @@
+twid	.x.com	/	TRUE	0	twid	u%3D236229840
+lang	x.com	/	FALSE	0	lang	es
+ct0	.x.com	/	TRUE	0	ct0	e3573766f0bdc2ec4eba18e433daca2598c33b1e5a0a0651499c7ccfeb5badbd970d18ee39545bfbea9ffabe35465d808e81337ba32e6b50a217b4eaba670708b80511227e66f4677cf40687e492e105
+gt	.x.com	/	TRUE	0	gt	1894186513002357032
+guest_id_ads	.x.com	/	TRUE	0	guest_id_ads	v1%3A174044478296382351
+auth_token	.x.com	/	TRUE	0	auth_token	75d96e97ac23ed79f5c129d20059058c556c83c6
+att	.x.com	/	TRUE	0	att	1-WnEiDCgYv0jtojRF8iUowYzCE3yReMZGdJf9x6PE
+guest_id	.x.com	/	TRUE	0	guest_id	v1%3A174044478296382351
+dnt	.x.com	/	TRUE	0	dnt	1
+personalization_id	.x.com	/	TRUE	0	personalization_id	"v1_ZtA5H6lXRzrK0x+mF1xEbQ=="
+kdt	.x.com	/	TRUE	0	kdt	S83UBJPTB5ZV93NPfJBWfxeqLndxzLQAboZSukbb
+guest_id_marketing	.x.com	/	TRUE	0	guest_id_marketing	v1%3A174044478296382351
