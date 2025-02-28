@@ -3,6 +3,7 @@ const cors = require('cors');
 const { exec } = require('child_process');
 const fs = require('fs');
 const path = require('path');
+const axios = require('axios');
 
 const app = express();
 const PORT = 3000;
@@ -10,7 +11,6 @@ const HOST = "localhost";
 const PUBLIC_HOST = "149.56.12.157";
 const DOWNLOAD_FOLDER = path.join(__dirname, 'downloads');
 
-// Ensure the downloads folder exists
 if (!fs.existsSync(DOWNLOAD_FOLDER)) {
     fs.mkdirSync(DOWNLOAD_FOLDER);
 }
@@ -18,9 +18,35 @@ if (!fs.existsSync(DOWNLOAD_FOLDER)) {
 app.use(cors());
 app.use(express.json());
 
-// API to download video
+// ✅ Helper Function - Verify Google OAuth Token
+async function verifyGoogleToken(token) {
+    try {
+        const response = await axios.get(`https://oauth2.googleapis.com/tokeninfo?id_token=${token}`);
+        return response.status === 200 && response.data.email_verified === 'true';
+    } catch (error) {
+        console.error("Token verification failed:", error.message);
+        return false;
+    }
+}
+
+// ✅ Secured Download Endpoint
 app.post('/download', async (req, res) => {
     const { tweetUrl } = req.body;
+    const authHeader = req.headers['authorization'];
+
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        return res.status(401).json({ error: 'Unauthorized' });
+    }
+
+    const token = authHeader.split('Bearer ')[1];
+
+    console.log('Received Token:', token);
+
+    const isValid = await verifyGoogleToken(token);
+    if (!isValid) {
+        return res.status(403).json({ error: 'Invalid or expired token' });
+    }
+
     if (!tweetUrl) {
         return res.status(400).json({ error: 'Tweet URL is required' });
     }
@@ -39,25 +65,17 @@ app.post('/download', async (req, res) => {
         }
 
         console.log(`Download complete: ${filePath}`);
-
-        // Return a direct link to the file
         const downloadUrl = `http://${PUBLIC_HOST}:${PORT}/files/${fileName}`;
         res.json({ downloadUrl });
 
-        // Delete the file 10 minutes after creation (to avoid issues)
         setTimeout(() => {
             fs.unlink(filePath, (err) => {
-                if (err) {
-                    console.error(`Error deleting file: ${err}`);
-                } else {
-                    console.log(`File deleted: ${fileName}`);
-                }
+                if (err) console.error(`Error deleting file: ${err}`);
             });
-        }, 10 * 60 * 1000); // 10 minutes
+        }, 10 * 60 * 1000);
     });
 });
 
-// Serve static files for direct download
 app.use('/files', express.static(DOWNLOAD_FOLDER));
 
 app.listen(PORT, () => {

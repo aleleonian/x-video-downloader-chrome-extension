@@ -6,7 +6,8 @@
   "permissions": [
     "storage",
     "scripting",
-    "downloads"
+    "downloads",
+    "identity"
   ],
   "host_permissions": [
     "https://twitter.com/*",
@@ -34,5 +35,11 @@
       ],
       "run_at": "document_idle"
     }
-  ]
+  ],
+  "oauth2": {
+    "client_id": "467113654089-8e7dgvod228p6odoa8b06jsv5rd126uj.apps.googleusercontent.com",
+    "scopes": [
+      "https://www.googleapis.com/auth/userinfo.email"
+    ]
+  }
 }
