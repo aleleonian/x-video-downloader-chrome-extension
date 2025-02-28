@@ -1,6 +1,6 @@
+
 const LOGIN_URL = "http://149.56.12.157:3000/views/login.html";  // Your VPS login page
 
-// Open the login page in a new window when popup opens
 window.onload = function () {
     const popup = window.open(LOGIN_URL, "_blank", "width=500,height=600");
 
@@ -9,7 +9,6 @@ window.onload = function () {
         return;
     }
 
-    // Poll until the popup closes, then check for stored sessionToken
     const pollTimer = setInterval(() => {
         if (popup.closed) {
             clearInterval(pollTimer);

@@ -1,12 +1,11 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <title>Twitter Video Downloader - Login</title>
+    <title>Login</title>
     <script src="https://accounts.google.com/gsi/client" async defer></script>
     <script>
         function handleCredentialResponse(response) {
-            // Send the ID token to the server for verification
             fetch('/api/verify-login', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
@@ -14,16 +13,11 @@
             })
                 .then(res => res.json())
                 .then(data => {
-                    if (data.success && data.sessionToken) {
-                        // Store sessionToken in URL hash so extension can grab it
+                    if (data.success) {
                         window.location.href = `success.html#sessionToken=${data.sessionToken}`;
                     } else {
                         alert('Login failed');
                     }
-                })
-                .catch(err => {
-                    console.error('Login error:', err);
-                    alert('Login failed');
                 });
         }
     </script>
@@ -31,14 +25,9 @@
 
 <body>
     <h2>Login to Twitter Video Downloader</h2>
-
-    <div id="g_id_onload" data-client_id="YOUR_CLIENT_ID.apps.googleusercontent.com"
-        data-callback="handleCredentialResponse" data-context="signin" data-ux_mode="popup" data-auto_prompt="false">
-    </div>
-
-    <div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="outline" data-text="signin_with"
-        data-size="large">
-    </div>
+    <div id="g_id_onload" data-client_id="467113654089-8e7dgvod228p6odoa8b06jsv5rd126uj.apps.googleusercontent.com"
+        data-callback="handleCredentialResponse"></div>
+    <div class="g_id_signin"></div>
 </body>
 
 </html>
