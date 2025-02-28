@@ -6,6 +6,8 @@ const path = require('path');
 
 const app = express();
 const PORT = 3000;
+const HOST = "localhost";
+const PUBLIC_HOST = "149.56.12.157";
 const DOWNLOAD_FOLDER = path.join(__dirname, 'downloads');
 
 // Ensure the downloads folder exists
@@ -39,7 +41,7 @@ app.post('/download', async (req, res) => {
         console.log(`Download complete: ${filePath}`);
 
         // Return a direct link to the file
-        const downloadUrl = `http://localhost:${PORT}/files/${fileName}`;
+        const downloadUrl = `http://${PUBLIC_HOST}:${PORT}/files/${fileName}`;
         res.json({ downloadUrl });
 
         // Delete the file 10 minutes after creation (to avoid issues)
@@ -59,5 +61,5 @@ app.post('/download', async (req, res) => {
 app.use('/files', express.static(DOWNLOAD_FOLDER));
 
 app.listen(PORT, () => {
-    console.log(`Server running on http://localhost:${PORT}`);
+    console.log(`Server running on http://${HOST}:${PORT}`);
 });

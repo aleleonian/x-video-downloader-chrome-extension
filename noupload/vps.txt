@@ -1,0 +1,12 @@
+curl -X POST 149.56.12.157:3000/download \
+     -H "Content-Type: application/json" \
+     -d '{"tweetUrl":"https://x.com/someTweet"}'
+
+
+
+scp ./server.js ubuntu@149.56.12.157:~/lab/x-video-downloader-server/
+
+
+Host 149.56.12.157
+    ServerAliveInterval 60
+    ServerAliveCountMax 3
