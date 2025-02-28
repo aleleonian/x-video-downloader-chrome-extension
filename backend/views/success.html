@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Login Successful</title>
+    <script>
+        const params = new URLSearchParams(window.location.hash.substring(1));
+        const sessionToken = params.get('sessionToken');
+
+        if (sessionToken) {
+            chrome.storage.local.set({ sessionToken }, () => {
+                window.close();
+            });
+        }
+    </script>
+</head>
+
+<body>
+    <h2>Login Successful!</h2>
+    <p>You may close this window.</p>
+</body>
+
+</html>

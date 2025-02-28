@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Twitter Video Downloader - Login</title>
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
+    <script>
+        function handleCredentialResponse(response) {
+            // Send the ID token to the server for verification
+            fetch('/api/verify-login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ idToken: response.credential })
+            })
+                .then(res => res.json())
+                .then(data => {
+                    if (data.success && data.sessionToken) {
+                        // Store sessionToken in URL hash so extension can grab it
+                        window.location.href = `success.html#sessionToken=${data.sessionToken}`;
+                    } else {
+                        alert('Login failed');
+                    }
+                })
+                .catch(err => {
+                    console.error('Login error:', err);
+                    alert('Login failed');
+                });
+        }
+    </script>
+</head>
+
+<body>
+    <h2>Login to Twitter Video Downloader</h2>
+
+    <div id="g_id_onload" data-client_id="YOUR_CLIENT_ID.apps.googleusercontent.com"
+        data-callback="handleCredentialResponse" data-context="signin" data-ux_mode="popup" data-auto_prompt="false">
+    </div>
+
+    <div class="g_id_signin" data-type="standard" data-shape="rectangular" data-theme="outline" data-text="signin_with"
+        data-size="large">
+    </div>
+</body>
+
+</html>

@@ -2,27 +2,21 @@
   "manifest_version": 3,
   "name": "Twitter Video Downloader",
   "version": "1.0",
-  "description": "Adds a download button to Twitter videos",
   "permissions": [
     "storage",
     "scripting",
-    "downloads",
-    "identity"
+    "downloads"
   ],
   "host_permissions": [
     "https://twitter.com/*",
     "https://x.com/*"
   ],
-  "web_accessible_resources": [
-    {
-      "resources": [],
-      "matches": [
-        "<all_urls>"
-      ]
-    }
-  ],
   "background": {
     "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_title": "Login to Twitter Video Downloader"
   },
   "content_scripts": [
     {
@@ -35,11 +29,5 @@
       ],
       "run_at": "document_idle"
     }
-  ],
-  "oauth2": {
-    "client_id": "467113654089-8e7dgvod228p6odoa8b06jsv5rd126uj.apps.googleusercontent.com",
-    "scopes": [
-      "https://www.googleapis.com/auth/userinfo.email"
-    ]
-  }
+  ]
 }
