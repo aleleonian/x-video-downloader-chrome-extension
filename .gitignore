@@ -4,6 +4,6 @@ node_modules/
 backend/downloads
 backend/twitter_cookies.txt
 cookie_extractor/chrome_data/
-.env
+backend/.env
 package-lock.json
 dist/
