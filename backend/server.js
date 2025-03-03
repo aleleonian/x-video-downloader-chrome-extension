@@ -23,17 +23,20 @@ checkEnvVars(["CHROME_EXTENSION_ID", "PUBLIC_HOST_ADDRESS"]);
 app.use(cors());
 app.use(express.json());
 
-// app.use((req, res, next) => {
-//     const allowedOrigins = [
-//         `chrome-extension://${process.env.CHROME_EXTENSION_ID}`
-//     ];
+app.use((req, res, next) => {
+    const allowedOrigins = [
+        `chrome-extension://${process.env.CHROME_EXTENSION_ID}`
+    ];
 
-//     if (!allowedOrigins.includes(req.headers.origin)) {
-//         return res.status(403).json({ error: 'Forbidden' });
-//     }
+    const requestOrigin = req.headers.origin;
 
-//     next();
-// });
+    if (requestOrigin && !allowedOrigins.includes(requestOrigin)) {
+        console.warn(`Blocked request from origin: ${requestOrigin}`);
+        return res.status(403).json({ error: 'Forbidden' });
+    }
+
+    next();
+});
 
 // API to download video
 app.post('/download', async (req, res) => {

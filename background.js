@@ -1,5 +1,6 @@
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
-    const HOST = "149.56.12.157";
+    const HOST = "localhost";
+    // const HOST = "149.56.12.157";
     const PORT = "3000";
     if (message.action === "download_video") {
         fetch(`http://${HOST}:${PORT}/download`, {
