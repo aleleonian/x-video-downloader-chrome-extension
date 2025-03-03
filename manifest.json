@@ -7,19 +7,12 @@
     "storage",
     "scripting",
     "downloads",
-    "cookies"
+    "cookies",
+    "activeTab"
   ],
   "host_permissions": [
     "https://twitter.com/*",
     "https://x.com/*"
-  ],
-  "web_accessible_resources": [
-    {
-      "resources": [],
-      "matches": [
-        "<all_urls>"
-      ]
-    }
   ],
   "background": {
     "service_worker": "background.js"
