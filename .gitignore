@@ -4,3 +4,4 @@ node_modules/
 backend/downloads
 cookie_extractor/chrome_data/
 .env
+package-lock.json
