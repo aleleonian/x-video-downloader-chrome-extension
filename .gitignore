@@ -2,6 +2,7 @@ savedx-chrome-extension.pem
 node_modules/
 .ds_store
 backend/downloads
+backend/twitter_cookies.txt
 cookie_extractor/chrome_data/
 .env
 package-lock.json
