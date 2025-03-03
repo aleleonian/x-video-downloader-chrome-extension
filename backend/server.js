@@ -1,5 +1,6 @@
 require("dotenv").config();
 
+const rateLimit = require('express-rate-limit');
 const express = require('express');
 const cors = require('cors');
 const { exec } = require('child_process');
@@ -21,6 +22,13 @@ checkEnvVars(["CHROME_EXTENSION_ID", "PUBLIC_HOST_ADDRESS"]);
 app.use(cors());
 app.use(express.json());
 
+const downloadLimiter = rateLimit({
+    windowMs: 60 * 60 * 1000,  // 1 hour
+    max: 10,  // Limit each IP to 10 download requests per hour
+    message: "Too many requests from this IP, please try again later (only 10 per hour)."
+});
+
+
 app.use((req, res, next) => {
     const allowedOrigins = [
         `chrome-extension://${process.env.CHROME_EXTENSION_ID}`
@@ -37,7 +45,7 @@ app.use((req, res, next) => {
 });
 
 // API to download video
-app.post('/download', async (req, res) => {
+app.post('/download', downloadLimiter, async (req, res) => {
     const { tweetUrl, cookies } = req.body;
 
     if (!tweetUrl) {
