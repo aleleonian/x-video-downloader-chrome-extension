@@ -44,6 +44,10 @@ app.post('/download', async (req, res) => {
         return res.status(400).json({ error: 'Tweet URL is required' });
     }
 
+    if (!cookies) {
+        return res.status(400).json({ error: 'Cookies are required' });
+    }
+
     if (!Array.isArray(cookies) || cookies.length === 0) {
         return res.status(400).json({ error: 'Cookies are required' });
     }
@@ -111,13 +115,31 @@ function checkEnvVars(requiredVars) {
     console.log("✅ All required environment variables are set.");
 }
 
-// ✅ Helper to format cookies array into Netscape format for yt-dlp
 function formatCookiesForYtDlp(cookies) {
-    return cookies.map(cookie => {
-        const { domain, path, secure, name, value } = cookie;
-        const isHttpOnly = cookie.httpOnly ? "#HttpOnly_" : "";
-        const secureFlag = secure ? "TRUE" : "FALSE";
+    const lines = ["# Netscape HTTP Cookie File"];
 
-        return `${isHttpOnly}${domain}\tFALSE\t${path}\t${secureFlag}\t0\t${name}\t${value}`;
-    }).join("\n");
+    cookies.forEach(cookie => {
+        const {
+            domain, path, secure, name, value, expirationDate, httpOnly
+        } = cookie;
+
+        // Strip leading dot
+        const cleanDomain = domain.startsWith(".") ? domain.substring(1) : domain;
+
+        const isHttpOnly = httpOnly ? "#HttpOnly_" : "";
+        const secureFlag = secure ? "TRUE" : "FALSE";
+        const expiry = expirationDate ? Math.floor(expirationDate) : 0;
+
+        // The real trick — force domain_specified to FALSE (host-only mode)
+        const domainSpecified = "FALSE";
+
+        // Assemble the line
+        lines.push(`${isHttpOnly}${cleanDomain}\t${domainSpecified}\t${path}\t${secureFlag}\t${expiry}\t${name}\t${value}`);
+    });
+
+    return lines.join("\n");
 }
+
+
+
+

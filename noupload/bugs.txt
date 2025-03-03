@@ -1,0 +1,4 @@
+This url confuses the extension:
+https://x.com/sapillopillo/status/1896597994767872165
+
+Because the app is trying to download a picture.
