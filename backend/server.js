@@ -7,16 +7,31 @@ const path = require('path');
 const app = express();
 const PORT = 3000;
 const HOST = "localhost";
-const PUBLIC_HOST = "149.56.12.157";
+const PUBLIC_HOST = process.env.PUBLIC_HOST_ADDRESS;
 const DOWNLOAD_FOLDER = path.join(__dirname, 'downloads');
+
 
 // Ensure the downloads folder exists
 if (!fs.existsSync(DOWNLOAD_FOLDER)) {
     fs.mkdirSync(DOWNLOAD_FOLDER);
 }
 
+checkEnvVars(["CHROME_EXTENSION_ID", "PUBLIC_HOST_ADDRESS"]);
+
 app.use(cors());
 app.use(express.json());
+
+app.use((req, res, next) => {
+    const allowedOrigins = [
+        `chrome-extension://${process.env.CHROME_EXTENSION_ID}`
+    ];
+
+    if (!allowedOrigins.includes(req.headers.origin)) {
+        return res.status(403).json({ error: 'Forbidden' });
+    }
+
+    next();
+});
 
 // API to download video
 app.post('/download', async (req, res) => {
@@ -63,3 +78,16 @@ app.use('/files', express.static(DOWNLOAD_FOLDER));
 app.listen(PORT, () => {
     console.log(`Server running on http://${HOST}:${PORT}`);
 });
+
+
+function checkEnvVars(requiredVars) {
+    const missingVars = requiredVars.filter(varName => !process.env[varName]);
+
+    if (missingVars.length > 0) {
+        console.error(`❌ Missing required environment variables: ${missingVars.join(", ")}`);
+        process.exit(1);
+    }
+
+    console.log("✅ All required environment variables are set.");
+}
+
