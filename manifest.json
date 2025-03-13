@@ -28,5 +28,11 @@
       ],
       "run_at": "document_idle"
     }
-  ]
+  ],
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "128": "icons/video.download.png"
+    }
+  }
 }

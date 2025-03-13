@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Settings</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            padding: 15px;
+            width: 250px;
+        }
+
+        input,
+        button {
+            width: 100%;
+            margin-top: 10px;
+            padding: 8px;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body>
+    <h3>Configure Backend</h3>
+    <label for="backendURL">Backend URL:</label>
+    <input type="text" id="backendURL" placeholder="http://your-server.com:3000">
+    <button id="save">Save</button>
+    <p id="status"></p>
+
+    <script src="popup.js"></script>
+</body>
+
+</html>

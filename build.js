@@ -1,9 +1,6 @@
 const fs = require('fs');
 const path = require('path');
 
-// Config - Set your production server address here
-const PRODUCTION_SERVER = '149.56.12.157';
-
 // Files to process
 const filesToProcess = ['background.js', 'content.js', 'manifest.json'];
 
@@ -12,18 +9,12 @@ function removeConsoleLogs(content) {
     return content.replace(/^\s*console\.log.*$/gm, '');
 }
 
-// Helper to replace 'localhost' with production IP
-function replaceServerAddress(content) {
-    return content.replace(/localhost/g, PRODUCTION_SERVER);
-}
-
 // Process files
 filesToProcess.forEach(file => {
     const filePath = path.join(__dirname, file);
     let content = fs.readFileSync(filePath, 'utf8');
 
     content = removeConsoleLogs(content);
-    content = replaceServerAddress(content);
 
     const outputDir = path.join(__dirname, 'dist');
     if (!fs.existsSync(outputDir)) {
@@ -35,10 +26,10 @@ filesToProcess.forEach(file => {
 });
 
 // Copy all other files (icons, etc.)
-const assets = ['icons', 'popup.html'];
+const assets = ['icons', 'popup.html', 'popup.js'];
 
 assets.forEach(asset => {
-    const assetPath = path.join(__dirname, 'src', asset);
+    const assetPath = path.join(__dirname, asset);
     const destPath = path.join(__dirname, 'dist', asset);
 
     if (fs.existsSync(assetPath)) {
