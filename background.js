@@ -69,7 +69,7 @@ function fetchXCookies() {
 function showErrorNotification(message) {
     chrome.notifications.create({
         type: "basic",
-        iconUrl: "icons/video.download.png",
+        iconUrl: "icons/icon.128.png",
         title: "Download Failed",
         message: message,
         priority: 2
