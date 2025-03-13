@@ -6,6 +6,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
             if (!cookies || cookies.length === 0) {
                 console.error("❌ No cookies available. User might not be logged into X.");
+                showErrorNotification("You must be logged into X.");
                 sendResponse({ status: "error", message: "You must be logged into X." });
                 return;
             }
@@ -27,6 +28,7 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                         chrome.downloads.download({ url: data.downloadUrl }, (downloadId) => {
                             if (chrome.runtime.lastError) {
                                 console.error("❌ Download failed:", chrome.runtime.lastError);
+                                showErrorNotification("Download failed: " + chrome.runtime.lastError.message);
                                 sendResponse({ status: "error" });
                             } else {
                                 console.log("✅ Download started:", downloadId);
@@ -35,11 +37,13 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
                         });
                     } else {
                         console.error("❌ No valid download URL in response.");
+                        showErrorNotification("No valid download URL received from the server.");
                         sendResponse({ status: "error" });
                     }
                 })
                 .catch(error => {
                     console.error("❌ Fetch error:", error);
+                    showErrorNotification("Network error: Unable to contact the backend.");
                     sendResponse({ status: "error" });
                 });
         });
@@ -59,6 +63,19 @@ function fetchXCookies() {
             console.warn("⚠️ No X cookies found. User might not be logged into X.");
         }
     });
+}
+
+// ✅ Function to Show an Error Notification
+function showErrorNotification(message) {
+    chrome.notifications.create({
+        type: "basic",
+        iconUrl: "icons/video.download.png",
+        title: "Download Failed",
+        message: message,
+        priority: 2
+    });
+
+    console.log("⚠️ Notification displayed:", message);
 }
 
 // Run on extension startup or install

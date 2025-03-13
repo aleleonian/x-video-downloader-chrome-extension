@@ -23,3 +23,9 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 });
+
+document.getElementById("showCookies").addEventListener("click", () => {
+    chrome.storage.local.get("xCookies", (data) => {
+        document.getElementById("output").textContent = JSON.stringify(data.xCookies, null, 2);
+    });
+});

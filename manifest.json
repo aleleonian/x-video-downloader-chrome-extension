@@ -8,6 +8,7 @@
     "scripting",
     "downloads",
     "cookies",
+    "notifications",
     "activeTab"
   ],
   "host_permissions": [
