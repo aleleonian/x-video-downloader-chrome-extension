@@ -26,7 +26,7 @@ filesToProcess.forEach(file => {
 });
 
 // Copy all other files (icons, etc.)
-const assets = ['icons', 'popup.html', 'popup.js'];
+const assets = ['icons', 'popup.html', 'popup.js', 'readme.md'];
 
 assets.forEach(asset => {
     const assetPath = path.join(__dirname, asset);
