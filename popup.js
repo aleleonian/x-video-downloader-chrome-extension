@@ -2,6 +2,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const backendInput = document.getElementById("backendURL");
     const saveButton = document.getElementById("save");
     const status = document.getElementById("status");
+    const showCookiesButton = document.getElementById("showCookies");
+    const helpButton = document.getElementById("helpBtn");
 
     // Load stored backend URL
     chrome.storage.local.get("backendURL", (result) => {
@@ -12,20 +14,30 @@ document.addEventListener("DOMContentLoaded", () => {
     saveButton.addEventListener("click", () => {
         const newBackend = backendInput.value.trim();
         if (!newBackend.startsWith("http")) {
-            status.textContent = "❌ Invalid URL";
+            status.textContent = "❌ Invalid URL format";
             status.style.color = "red";
             return;
         }
 
         chrome.storage.local.set({ backendURL: newBackend }, () => {
-            status.textContent = "✅ Saved!";
+            status.textContent = "✅ Backend URL saved!";
             status.style.color = "green";
+            setTimeout(() => { status.textContent = ""; }, 3000); // Clear message after 3 seconds
         });
     });
-});
 
-document.getElementById("showCookies").addEventListener("click", () => {
-    chrome.storage.local.get("xCookies", (data) => {
-        document.getElementById("output").textContent = JSON.stringify(data.xCookies, null, 2);
+    // Show stored cookies
+    showCookiesButton.addEventListener("click", () => {
+        chrome.storage.local.get("xCookies", (data) => {
+            const output = document.getElementById("output");
+            output.textContent = data.xCookies && data.xCookies.length
+                ? JSON.stringify(data.xCookies, null, 2)
+                : "No stored cookies found.";
+        });
+    });
+
+    // ✅ Open README in a new tab
+    helpButton.addEventListener("click", () => {
+        chrome.runtime.sendMessage({ action: "open_readme" });
     });
 });

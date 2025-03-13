@@ -50,9 +50,15 @@ chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
 
         return true; // Keep sendResponse open for async response
     }
+
+    // ✅ Handle opening the README in a new tab
+    if (message.action === "open_readme") {
+        console.log("Opening README...");
+        chrome.tabs.create({ url: "https://github.com/aleleonian/x-video-downloader-chrome-extension/blob/main/README.md" });
+    }
 });
 
-// Fetch X cookies and store them
+// ✅ Fetch X cookies and store them
 function fetchXCookies() {
     chrome.cookies.getAll({ domain: "x.com" }, (cookies) => {
         if (cookies.length > 0) {
@@ -78,6 +84,6 @@ function showErrorNotification(message) {
     console.log("⚠️ Notification displayed:", message);
 }
 
-// Run on extension startup or install
+// ✅ Run on extension startup or install
 chrome.runtime.onStartup.addListener(fetchXCookies);
 chrome.runtime.onInstalled.addListener(fetchXCookies);

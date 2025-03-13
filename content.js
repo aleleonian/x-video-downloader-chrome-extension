@@ -72,7 +72,7 @@ function addDownloadButton() {
             // Revert back to normal after 5 seconds
             setTimeout(() => {
               btn.innerText = buttonInnerText;
-              btn.style.background = "#1DA1F2";
+              btn.style.background = "#EFEFEF";
               btn.style.color = "#fff";
               btn.disabled = false;
             }, 5000);

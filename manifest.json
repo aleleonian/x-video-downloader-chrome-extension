@@ -9,7 +9,8 @@
     "downloads",
     "cookies",
     "notifications",
-    "activeTab"
+    "activeTab",
+    "tabs"
   ],
   "host_permissions": [
     "https://twitter.com/*",
