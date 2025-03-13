@@ -1,0 +1,4 @@
+This extension only accesses cookies for x.com to facilitate video downloads from X (formerly Twitter). 
+These cookies are transmitted to our secure backend server to perform video downloads.
+No cookies are stored by the extension or the server after the download completes.
+The extension does not collect any personal information beyond the cookies necessary for video downloads.
