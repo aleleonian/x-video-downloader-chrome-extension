@@ -15,8 +15,9 @@ function createSpinner() {
   spinner.style.cssText = `
         width: 16px;
         height: 16px;
-        border: 2px solid #fff;
-        border-top: 2px solid transparent;
+        border: 2px solid transparent;
+        border-top: 2px solid #4CAF50; /* Green color */
+        border-right: 2px solid #4CAF50;
         border-radius: 50%;
         animation: spin 0.8s linear infinite;
         display: inline-block;
@@ -24,6 +25,7 @@ function createSpinner() {
     `;
   return spinner;
 }
+
 
 // 3️⃣ Function to add the download button to tweets
 function addDownloadButton() {
@@ -47,7 +49,8 @@ function addDownloadButton() {
     btn.innerText = buttonInnerText;
     btn.className = "download-video-btn";
     btn.style.cssText =
-      "background:#1DA1F2; color:#fff; border:none; padding:5px 10px; cursor:pointer; font-size:12px; border-radius:5px; margin-left:10px; transition: background 0.3s ease, color 0.3s ease;";
+      "color:#fff; border:none; padding:5px 10px; cursor:pointer; font-size:21px; border-radius:5px; margin-left:10px; transition: background 0.3s ease, color 0.3s ease;";
+    // "background:#1DA1F2; color:#fff; border:none; padding:5px 10px; cursor:pointer; font-size:12px; border-radius:5px; margin-left:10px; transition: background 0.3s ease, color 0.3s ease;";
 
     btn.addEventListener("click", () => {
       btn.innerText = "";
