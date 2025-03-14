@@ -53,7 +53,8 @@ cd backend
 npm install
 node server.js
 ```
-_(Make sure you update `.env` including data for these variables: CHROME_EXTENSION_ID, PUBLIC_HOST_ADDRESS)_
+_(Make sure you update `.env` including data for these variables: CHROME_EXTENSION_ID=cifilaglnbehpphfjbmgdaileliojgfe
+PUBLIC_HOST_ADDRESS=localhost)_
 
 
 3. **Set the backend in the extension settings**:  
