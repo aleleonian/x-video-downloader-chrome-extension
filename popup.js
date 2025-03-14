@@ -38,6 +38,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // ✅ Open README in a new tab
     helpButton.addEventListener("click", () => {
+        debugger
+        console.log("click in helpButton!");
         chrome.runtime.sendMessage({ action: "open_readme" });
     });
 });
