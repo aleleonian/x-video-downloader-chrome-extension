@@ -175,3 +175,4 @@ function formatCookiesForYtDlp(cookies) {
 
     return lines.join("\n");
 }
+
