@@ -8,9 +8,8 @@ const fs = require("fs");
 const path = require("path");
 
 const app = express();
-const PORT = 3000;
-const HOST = "localhost";
-const PUBLIC_HOST = process.env.PUBLIC_HOST_ADDRESS;
+const PORT = process.env.PORT || 3003;
+const HOST = process.env.HOST_ADDRESS;
 const DOWNLOAD_FOLDER = path.join(__dirname, "downloads");
 
 // Queue for managing tasks
@@ -22,7 +21,7 @@ if (!fs.existsSync(DOWNLOAD_FOLDER)) {
     fs.mkdirSync(DOWNLOAD_FOLDER);
 }
 
-checkEnvVars(["CHROME_EXTENSION_ID", "PUBLIC_HOST_ADDRESS"]);
+checkEnvVars(["HOST_ADDRESS"]);
 
 app.use(cors());
 app.use(express.json());
@@ -33,17 +32,19 @@ const downloadLimiter = rateLimit({
     message: "Too many requests from this IP, please try again later (only 10 per hour).",
 });
 
-app.use((req, res, next) => {
-    const allowedOrigins = [`chrome-extension://${process.env.CHROME_EXTENSION_ID}`];
-    const requestOrigin = req.headers.origin;
+// this would only work for an extension downloaded from the store but not if i keep
+// uploading the extension in dev mode.
+// app.use((req, res, next) => {
+//     const allowedOrigins = [`chrome-extension://${process.env.CHROME_EXTENSION_ID}`];
+//     const requestOrigin = req.headers.origin;
 
-    if (requestOrigin && !allowedOrigins.includes(requestOrigin)) {
-        console.warn(`Blocked request from origin: ${requestOrigin}`);
-        return res.status(403).json({ error: "Forbidden" });
-    }
+//     if (requestOrigin && !allowedOrigins.includes(requestOrigin)) {
+//         console.warn(`Blocked request from origin: ${requestOrigin}`);
+//         return res.status(403).json({ error: "Forbidden" });
+//     }
 
-    next();
-});
+//     next();
+// });
 
 // API to queue a download
 app.post("/download", downloadLimiter, async (req, res) => {
@@ -107,7 +108,7 @@ async function processQueue() {
             } else {
                 console.log(`✅ Download complete: ${task.filePath}`);
 
-                const downloadUrl = `http://${PUBLIC_HOST}:${PORT}/files/${task.fileName}`;
+                const downloadUrl = `http://${HOST}:${PORT}/files/${task.fileName}`;
                 task.res.json({ downloadUrl });
 
                 // Delete the file after 10 minutes
@@ -136,7 +137,7 @@ async function processQueue() {
 app.use("/files", express.static(DOWNLOAD_FOLDER));
 
 app.listen(PORT, () => {
-    console.log(`🚀 Server running on http://${HOST}:${PORT}`);
+    console.log(`🚀 Server running on port ${PORT}`);
 });
 
 function checkEnvVars(requiredVars) {

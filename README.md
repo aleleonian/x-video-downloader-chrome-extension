@@ -53,8 +53,7 @@ cd backend
 npm install
 node server.js
 ```
-_(Make sure you update `.env` including data for these variables: CHROME_EXTENSION_ID and
-PUBLIC_HOST_ADDRESS. To know the contents of the first one, check the id of this chrome extension in chrome://extensions/ and for the second one, use the word localhost)_
+_(Make sure you update `.env` including data for these variables: HOST_ADDRESS, PORT. The contents of HOST_ADDRESS is the host where the backend is going to run on. If you're running it on your machine, it's localhost. PORT is the port where the app will be listening to. Defaults to 3003.)_
 
 
 3. **Set the backend in the extension settings**:  
