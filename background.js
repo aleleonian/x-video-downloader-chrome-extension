@@ -1,8 +1,10 @@
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.action === "download_video") {
         chrome.storage.local.get(['backendURL', 'xCookies'], (result) => {
-            const backendURL = result.backendURL || "https://ale.ar:3003"; // Default backend
+            const backendURL = result.backendURL || "https://xvd.ale.ar"
             const cookies = result.xCookies;
+
+            console.log("backendURL->" + backendURL);
 
             if (!cookies || cookies.length === 0) {
                 console.error("❌ No cookies available. User might not be logged into X.");
