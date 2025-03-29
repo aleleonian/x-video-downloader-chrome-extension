@@ -79,6 +79,9 @@ app.post("/download", downloadLimiter, async (req, res) => {
         processQueue();
     }
 });
+app.get("/", function (req, res) {
+    res.send("Welcome to the /");
+})
 
 // Function to process the queue
 async function processQueue() {
