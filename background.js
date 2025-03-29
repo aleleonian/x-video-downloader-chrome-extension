@@ -1,7 +1,7 @@
 chrome.runtime.onMessage.addListener((message, sender, sendResponse) => {
     if (message.action === "download_video") {
         chrome.storage.local.get(['backendURL', 'xCookies'], (result) => {
-            const backendURL = result.backendURL || "http://149.56.12.157:3000"; // Default backend
+            const backendURL = result.backendURL || "https://ale.ar:3003"; // Default backend
             const cookies = result.xCookies;
 
             if (!cookies || cookies.length === 0) {
