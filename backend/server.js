@@ -111,7 +111,8 @@ async function processQueue() {
             } else {
                 console.log(`✅ Download complete: ${task.filePath}`);
 
-                const downloadUrl = `http://${HOST}:${PORT}/files/${task.fileName}`;
+                // const downloadUrl = `http://${HOST}:${PORT}/files/${task.fileName}`;
+                const downloadUrl = `https://${HOST}/files/${task.fileName}`;
                 task.res.json({ downloadUrl });
 
                 // Delete the file after 10 minutes
